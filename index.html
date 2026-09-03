@@ -273,7 +273,28 @@
       document.getElementById('notconnected').style.display = 'flex';
     }
   </script>
-<script type="module" src="game.js"></script>
+<script type="module">
+  async function loadGameEngine() {
+    try {
+      // Fetches the game.js file sitting in your repository
+      const response = await fetch('game.js');
+      const codeText = await response.text();
+      
+      // Forces the browser to pack the code into an anonymous memory blob
+      const blob = new Blob([codeText], { type: 'application/javascript' });
+      const blobURL = URL.createObjectURL(blob);
+      
+      // Injecting the anonymous runtime script directly into your page layout
+      const scriptModule = document.createElement('script');
+      scriptModule.type = 'module';
+      scriptModule.src = blobURL;
+      document.body.appendChild(scriptModule);
+    } catch (error) {
+      console.error("Game loading failed:", error);
+    }
+  }
+  loadGameEngine();
+</script>
 
 
 <div id="shimeji-workArea" style="position: fixed; background: transparent; z-index: 2147483643; width: 100vw; height: 100vh; left: 0px; top: 0px; transform: translate(0px, 0px); pointer-events: none;"></div></body><grammarly-desktop-integration data-grammarly-shadow-root="true" style="visibility: visible !important;"><template shadowrootmode="open"><style>
